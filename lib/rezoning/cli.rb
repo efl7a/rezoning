@@ -3,6 +3,7 @@ require 'colorize'
 class Rezoning::CLI
   def call
     puts "Welcome to our informative CLI for rezoning petitions in Charlotte, NC."
+    puts "Here are the Rezoning petitions for 2017"
     Rezoning::Scraper.new.scrape_petitions
     display_petitions
     menu
@@ -18,34 +19,31 @@ class Rezoning::CLI
     end
   end
 
-  def display_petitioners
-    Rezoning::Petition.all.each do |petition|
-      puts "  petitioner:".colorize(:light_blue) + " #{petition.petitioner}"
-      puts "----------------------".colorize(:green)
-    end
-  end
-
   def menu
-    puts "How would you like to search the Rezoning Petitions-petition number, petitioner, description, or district? You may type exit anytime to quit the program."
+    puts "How would you like to search the Rezoning Petitions:"
+    puts "Type 1 for petition number."
+    puts "     2 for petitioner."
+    puts "     3 for district"
+    puts "You may type exit anytime to quit the program."
     input = nil
     while input != "exit"
       input = gets.strip
       case input
-      when "petition number"
+      when "1"
         puts "Which petition number would you like more information about?"
         input = gets.strip
         Rezoning::Petition.find_by_number(input).display
         puts "Petition number, district or petitioner? Remember, you can always type exit to leave."
-      when "district"
+      when "2"
         puts "Which district would you like more information about?"
         input = gets.strip
         Rezoning::Petition.display_by_district(input)
         puts "Petition number, district or petitioner? Remember, you can always type exit to leave."
-      when "petitioner"
-        display_petitioners
+      when "3"
+        Rezoning::Petition.display_petitioners
         puts "Which petitioner would you like more information about?"
         input = gets.strip
-        Rezoning::Petition.diplay_by_petitioner(input)
+        Rezoning::Petition.display_by_petitioner(input)
         puts "Petition number, district or petitioner? Remember, you can always type exit to leave."
       end
     end
