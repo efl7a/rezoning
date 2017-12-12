@@ -1,7 +1,9 @@
+require 'colorize'
+
 class Rezoning::CLI
   def call
     puts "Welcome to our informative CLI for rezoning petitions in Charlotte, NC."
-    Rezoning::Scaper.new.scrape_petitions
+    Rezoning::Scraper.new.scrape_petitions
     display_petitions
     menu
   end
@@ -32,23 +34,19 @@ class Rezoning::CLI
       when "petition number"
         puts "Which petition number would you like more information about?"
         input = gets.strip
-        petition = Rezoning::Petition.find_by_number(input)
-        petition.display
+        Rezoning::Petition.find_by_number(input).display
         puts "Petition number, district or petitioner? Remember, you can always type exit to leave."
-        input = gets.strip
       when "district"
         puts "Which district would you like more information about?"
         input = gets.strip
-        Rezoning::Petition.diplay_by_district(input)
+        Rezoning::Petition.display_by_district(input)
         puts "Petition number, district or petitioner? Remember, you can always type exit to leave."
-        input = gets.strip
       when "petitioner"
         display_petitioners
         puts "Which petitioner would you like more information about?"
         input = gets.strip
         Rezoning::Petition.diplay_by_petitioner(input)
         puts "Petition number, district or petitioner? Remember, you can always type exit to leave."
-        input = gets.strip
       end
     end
   end
