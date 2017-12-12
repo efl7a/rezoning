@@ -1,29 +1,54 @@
 class Rezoning::CLI
   def call
     puts "Welcome to our informative CLI for rezoning petitions in Charlotte, NC."
+    Rezoning::Scaper.new.scrape_petitions
+    display_petitions
     menu
-
-    goodbye
   end
 
-  def list_years
-    puts "2011, 2012.."
-    #from http://charlottenc.gov/planning/Rezoning/Pages/Home.aspx
+  def display_petitions
+    Rezoning::Petition.all.each do |petition|
+      puts "#{petition.number}".colorize(:blue)
+      puts "  petitioner:".colorize(:light_blue) + " #{petition.petitioner}"
+      puts "  description:".colorize(:light_blue) + " #{petition.description}"
+      puts "  district:".colorize(:light_blue) + " #{petition.district}"
+      puts "----------------------".colorize(:green)
+    end
+  end
 
+  def display_petitioners
+    Rezoning::Petition.all.each do |petition|
+      puts "  petitioner:".colorize(:light_blue) + " #{petition.petitioner}"
+      puts "----------------------".colorize(:green)
+    end
   end
 
   def menu
-    puts "How would you like to explore the Rezoning Petitions-year, district, or road? You may type exit anytime to quit the program."
+    puts "How would you like to search the Rezoning Petitions-petition number, petitioner, description, or district? You may type exit anytime to quit the program."
     input = nil
     while input != "exit"
       input = gets.strip
       case input
-      when "year"
-        puts "List the available years"
+      when "petition number"
+        puts "Which petition number would you like more information about?"
+        input = gets.strip
+        petition = Rezoning::Petition.find_by_number(input)
+        petition.display
+        puts "Petition number, district or petitioner? Remember, you can always type exit to leave."
+        input = gets.strip
       when "district"
-        puts "List the available districts"
-      when "road"
-        puts "Which road would you like to search for?  Please do not add Rd, Ave, or Blvd."
+        puts "Which district would you like more information about?"
+        input = gets.strip
+        Rezoning::Petition.diplay_by_district(input)
+        puts "Petition number, district or petitioner? Remember, you can always type exit to leave."
+        input = gets.strip
+      when "petitioner"
+        display_petitioners
+        puts "Which petitioner would you like more information about?"
+        input = gets.strip
+        Rezoning::Petition.diplay_by_petitioner(input)
+        puts "Petition number, district or petitioner? Remember, you can always type exit to leave."
+        input = gets.strip
       end
     end
   end
