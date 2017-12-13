@@ -10,8 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["'efl7a@yahoo.de'"]
 
   spec.summary       = %q{Scrapes the charlottenc.gov page for rezoning petitions.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/efl7a/rezoning.git"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -36,4 +35,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry", "~> 0.11"
   spec.add_dependency "Nokogiri", "~> 1.8.1"
   spec.add_dependency "open-uri"
+  spec.add_dependency "colorize", "~>0.8.1"
 end
